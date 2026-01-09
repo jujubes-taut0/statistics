@@ -10,34 +10,41 @@
 
 <body>
     <div class="container">
-        <!-- 1. The Wrapper (for responsive sizing) -->
-        <div class="video-background">
-            <!-- 2. The Iframe -->
-            <iframe id="trap-video"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1&autoplay=1&mute=0&controls=0&loop=1&playlist=dQw4w9WgXcQ&playsinline=1"
-                title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
-            </iframe>
-        </div>
-        <!-- 3. Invisible Overlay to capture clicks if autoplay fails -->
-        <div class="click-layer"></div>
+        <video id="trap-video" autoplay loop playsinline>
+            <source src="rickroll.mp4" type="video/mp4">
+            Your browser does not support video.
+        </video>
     </div>
 
     <script>
         // Count the victim
         fetch("https://api.counterapi.dev/v1/jujubes-taut0/rickroll/up").catch(console.error);
 
-        // Fallback: If autoplay is blocked, any click on the invisible layer starts it
-        const layer = document.querySelector('.click-layer');
-        // We can't directly control the iframe volume via click on a div easily due to cross-origin
-        // But the iframe itself is set to autoplay. 
-        // If it fails, the user will instinctively click the video (iframe), which passes the click to YouTube
-        // So we actually don't want to block clicks to the iframe.
+        const video = document.getElementById('trap-video');
 
-        // Changing strategy: Just let the iframe fill the screen. 
-        // YouTube's own player handles the "Click to unmute" UI if autoplay is blocked.
-        layer.style.display = 'none'; 
+        // Robust Autoplay Strategy:
+        // 1. Try to play unmuted directly (rarely works, but worth a shot)
+        video.muted = false;
+        video.play().catch(error => {
+            console.log("Unmuted autoplay blocked. Trying muted...");
+
+            // 2. Fallback: Play Muted (usually works)
+            video.muted = true;
+            video.play().then(() => {
+                // If muted play works, we wait for a click to unmute
+                document.addEventListener('click', () => {
+                    video.muted = false;
+                    // Reset to start if it was looping silently
+                    video.currentTime = 0;
+                }, { once: true });
+            }).catch(e => {
+                // 3. Last Resort: Wait for interaction to play at all
+                document.addEventListener('click', () => {
+                    video.muted = false;
+                    video.play();
+                }, { once: true });
+            });
+        });
     </script>
 </body>
 

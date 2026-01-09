@@ -19,6 +19,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: #000;
 }
 
 .container {
@@ -28,23 +29,17 @@ body {
     overflow: hidden;
 }
 
-.video-background {
+video {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300%;
-    height: 300%;
-    /* Make it huge to crop black bars */
-    pointer-events: none;
-    /* Let clicks pass through if needed, but we want interaction for youtube */
-    pointer-events: auto;
-}
-
-iframe {
-    width: 100%;
-    height: 100%;
-    pointer-events: auto;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 1;
+    opacity: 0.8;
 }
 
 h1 {
@@ -78,7 +73,7 @@ button {
 
 button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 51, 102, 0.6);
+    box-shadow: 8px 25px rgba(255, 51, 102, 0.6);
 }
 
 button:active {
