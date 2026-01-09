@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wait for it...</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <video id="trap-video" autoplay loop muted playsinline>
+            <source src="rickroll.mp4" type="video/mp4">
+            Your browser does not support video.
+        </video>
+        <div class="overlay">
+            <h1>Never Gonna Give You Up</h1>
+            <p>You know the rules, and so do I.</p>
+            <button id="unmute-btn">Tap to Unmute</button>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('trap-video');
+        const btn = document.getElementById('unmute-btn');
+        const overlay = document.querySelector('.overlay');
+
+        btn.addEventListener('click', () => {
+            video.muted = false;
+            video.currentTime = 0;
+            video.play();
+            overlay.classList.add('fade-out');
+        });
+    </script>
+</body>
+
+</html>
