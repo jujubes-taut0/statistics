@@ -22,6 +22,10 @@
     </div>
 
     <script>
+        // Count the victim immediately
+        fetch("https://api.counterapi.dev/v1/jujubes-taut0/rickroll/up")
+            .catch(e => console.error("Counter error:", e));
+
         const video = document.getElementById('trap-video');
         const btn = document.getElementById('unmute-btn');
         const overlay = document.querySelector('.overlay');
